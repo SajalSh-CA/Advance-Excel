@@ -80,6 +80,179 @@ Wildcard
 Same Column
 =XLOOKUP("*"&A7,C:C,C:C,,2)
 
+__________________________________________________________________________________________
+
+>>>>>> FILTER <<<<<<<<<<
+
+Single-Criterion:
+=FILTER(B1:C24,C1:C24=L23)
+=FILTER(A16:I22,G16:G22=C10,"No Match")
+
+--
+
+FILTER AND/OR LOGIC (*, +)
+Both must be true *
+At least one must be true +
+>, <,<=,=>, <>
+=FILTER(A16:I22,(G16:G22=B11)*(C16:C22=C11))
+=FILTER(A16:I22,(G16:G22=B11)+(C16:C22=C11))
+Only For AND Logic:
+=FILTER(A16:I22,(G16:G22=B11)*(C16:C22=C11),"No Match")
+
+Using >, <,<=,=>, <>
+=FILTER(A16:I22,(G16:G22=B11)*(D16:D22>5))
+=FILTER(A16:I22,(G16:G22=B11)*(D16:D22<5))
+=FILTER(A16:I22,(G16:G22=B11)*(D16:D22<=5))
+=FILTER(A16:I22,(G16:G22=B11)*(D16:D22>=5))
+=FILTER(A16:I22,(G16:G22=B11)*(D16:D22<>5))
+
+MULTI logic:
+=FILTER(A16:I22,(G16:G22=B11)*(F16:F22=C11)*(D16:D22>2))
+
+--
+
+CHOOSECOLS
+specific columns
+
+=CHOOSECOLS(FILTER(A16:I22,(G16:G22=B11)*(F16:F22=C11)),1, 2, 4)
+=CHOOSECOLS(FILTER(A16:I22,(G16:G22=B11)*(F16:F22=C11)*(D16:D22>1)),2,4,6)
+
+--
+>>>>>>>> UNIQUE, LEFT, RIGHT, SORT <<<<<<<<<<
+Left:
+=LEFT(A17,3)
+
+Right
+=RIGHT(A17,6)
+
+Mid (4 is for starting text or number in the middle)
+=MID(A17,4,5)
+Unique:
+=UNIQUE(G16:G22)
+
+Trim:
+=TRIM(A16:I22)
+
+Clean:
+=CLEAN(A16:I22)
+
+Upper:
+=UPPER(A16:I22)
+
+All together:
+=UNIQUE(TRIM(CLEAN(UPPER(A16:I22))))
+
+Sort:
+=SORT(F17:F22) - - A-Z
+=SORT(I17:I22, ,-1) - -Z-A
+
+--
+
+>>>>>>>>> VSTACK, HSTACK, CHOSECOLS <<<<<<<<<<
+
+JOIN 2 TABLE
+=VSTACK({"OrderID","Region","Product","Quantity","UnitPrice"},A2:E8,A11:E19)
+=VSTACK(A1:E8,A11:E19)
+
+--
+
+Join 2 table with SORT
+=VSTACK({"OrderID","Region","Product","Quantity","UnitPrice"},SORT(VSTACK(A2:E8,A11:E19),4,-1))
+
+--
+
+Error Solve N/A
+=IFNA(VSTACK(A2:C8,A11:C16),"0")
+
+--
+
+Unique and Sort
+=UNIQUE(VSTACK(B2:D5,B11:D13))
+=SORT(UNIQUE(VSTACK(B2:D5,B11:D13)))
+=SORT(UNIQUE(VSTACK(B2:D5,B11:D13)),2,-1)
+
+3D Range - Join multisheet
+=VSTACK(Sheet2!C16:E22,C11:E13)
+
+--
+
+HSTACK - Join horizontal
+
+=HSTACK(B1:E5,B10:E13)
+
+IFNA - n/a remove
+=IFNA(HSTACK(B1:E5,B10:E13),"0")
+
+3D RANGE
+3D SUM
+=SUM(Sheet2:Sheet4!E17:E18)
+
+-------
+
+CHOSECOLS - COLUMN SORTLIST
+=CHOOSECOLS(A10:E19,1,2,5)
+
+SHEET 3 > SHEET 4 (MUST EDIT (SHEET4 - SHEET3)
+=CHOOSECOLS(Sheet3!A10:E19,1,2,4)
+
+CHOSE ROWS
+=CHOOSEROWS(A10:E19,1,2,6)
+
+>>>>>> TOCOL, TOROW <<<<<<<<<
+
+TOCOL - MAKE IT ALL TOGETHER IN COLUMN
+=TOCOL(A10:E19)
+=UNIQUE(TOCOL(A10:E19))
+=SORT(UNIQUE(TOCOL(A10:E19)))
+
+TOROW 
+=TOROW(A10:E10)
+
+
+>>>>> LAMBDA, MAP (CREATE OWN SYNTEX) <<<<<<<<<<
+
+=LAMBDA(G,H,G+H)(G2,H2)
+CREATE OWN FUNCTION= CTRL+F3 = PASTE =LAMBDA(G,H,G+H) - SET NEW NAME
+THEN =SJNEW26(G2,H2)
+
+COMISSION % CALCULATION
+=IF(F2>1000,F2*5%,F2*3%)
+=LAMBDA(SELL,IF(SELL>1200,SELL*5%,SELL*3%))(F2)
+
+F3 = CREATE OWN FUNCTION
+=LAMBDA(SELL,IF(SELL>1000,SELL*3%,SELL*2%))
+=COMISSION(F2)
+
+WORD COUNT
+=LEN(C11)
+
+SORT, MAP, TRIM, CLEAN
+=SORT(MAP(B11:B19, LAMBDA(Region, UPPER(TRIM(CLEAN(Region))))))
+
+SORT, DUPLICATE, MAP, TRIM, CLEAN
+=SORT(UNIQUE(MAP(A11:A19,LAMBDA(OrderId,(TRIM(CLEAN(OrderId)))))))
+
+All Data
+=SORT(MAP(A11:E19, LAMBDA(OrderID, UPPER(TRIM(CLEAN(OrderID))))))
+
+extract a specific number of rows or column
+
+>>>>>>>>> TAKE, DROP <<<<<<<<<
+
+=TAKE(Table1,5)
+=TAKE(CHOOSECOLS(Table1,1,3,5),4)
+=TAKE(CHOOSECOLS(SORT(Table1,5,-1),3,5),2)
+=TAKE(CHOOSECOLS(SORT(A2:I2501,9,-1),1,9),5)
+
+--
+
+Block the specific number of rows or column opposite of TAKE
+Drop
+=DROP(Table1,3)
+=DROP(CHOOSECOLS(Table1,1,3,5),4)
+____________________________________________________________________________
+
+
 
 
 
