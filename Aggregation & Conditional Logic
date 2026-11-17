@@ -66,3 +66,54 @@ operator
 wildcard
 =MINIFS(E26:E33,F26:F33,E24,A26:A33,"REG*")
 
+>>>>>>AGGREGATE<<<<<<<<
+Skips all errors (#DIV/0!, #N/A, #VALUE!, #REF!)
+
+SUM     9	=AGGREGATE(9, 7, range)	Total sales or expenses
+AVERAGE 1	=AGGREGATE(1, 7, range)	Average order value or score
+COUNT   2	=AGGREGATE(2, 7, range)	How many valid sales happened
+COUNTA  3	=AGGREGATE(3, 7, range)	How many rows have text or names
+MAX     4	=AGGREGATE(4, 7, range)	Best sale or highest score
+MIN     5	=AGGREGATE(5, 7, range)	Lowest cost or fastest delivery
+STDEV.S 7	=AGGREGATE(7, 7, range)	Check consistency or risK
+
+=AGGREGATE(9,7,F11:F19)
+=AGGREGATE(2,7,F11:F19)
+=AGGREGATE(5,7,F11:F19)
+=AGGREGATE(4,7,F11:F19)
+=AGGREGATE(3,7,B11:B19)
+
+
+>>>>>IF, IFS, SWITCH<<<<<<<
+
+=IF(E11>100,"YES","NO")
+=IFS(E11>200,"GOOD",E11>=100,"POOR",E11<100,"BAD")
+MULTI CONDITION
+=IF(AND(E11>200,D11>8),"GOOD","BAD")
+=IF(AND(B11="West",D11>5),"GOOD","BAD")
+=IF(AND(B11="West",D11>5,E11>200),"GOOD","BAD")
+
+
+=SWITCH(D17,3,"GOOD",4,"VERY GOOD")
+n/a solve
+=SWITCH(D17,3,"GOOD",4,"VERY GOOD","Not Applicable")
+ALTERNATIVE: =IFS(D17=3,"GOOD",D17=4,"VERY GOOD",D17>4,"NOT APPLICABLE",D17<3,"NOT APPLICABLE")
+=SWITCH(TRUE,D17=3,"GOOD",D17=4,"VERY GOOD",D17>4,"NOT APPLICABLE",D17<3,"NOT APPLICABLE")
+=SWITCH(TRUE,B2>=10000,"Gold Bonus",B2<10000,"Silver Bonus",B2<5000,"Brozen Bonus",B2<1000,"No Bonus","B2=0,"No Bonus")
+
+
+>>>>IFERROR,ROUND<<<<<<
+
+=IFERROR(E11/D11,"0")
+=IFERROR(E11/D11,0)
+=IFERROR(E11/D11,"No Sales")
+=IFERROR(E16*D16,"")
+
+=ROUND(E11,2)
+=ROUNDDOWN(E11,0)
+=ROUNDUP(E11,0)
+=MROUND(E11,5)
+
+
+
+
